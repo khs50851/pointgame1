@@ -152,6 +152,17 @@ public class GameController {
 					gdto.setInput_count(checkTodayGameCount + 1);
 					gameService.insertGamest(gdto);
 					return new ResponseEntity<>(new CMRespDto<>(1,"2B",gdto),HttpStatus.OK);
+				}else if (hitAndMissed.get(1) == 3 && hitAndMissed.get(0) == 0) {
+					pdto.setMember_number(dto.getMember_number());
+					gameService.updatePointInfoDate(dto);
+
+					gdto.setMember_number(dto.getMember_number());
+					gdto.setInput_number(dto.getEnter_num());
+					gdto.setCheck_result("3B");
+					gdto.setHided_number(hitAndMissed.get(2));
+					gdto.setInput_count(checkTodayGameCount + 1);
+					gameService.insertGamest(gdto);
+					return new ResponseEntity<>(new CMRespDto<>(1,"3B",gdto),HttpStatus.OK);
 				}else if (hitAndMissed.get(0) == 0 && hitAndMissed.get(1) == 0) {
 					pdto.setMember_number(dto.getMember_number());
 					gameService.updatePointInfoDate(dto);
@@ -248,6 +259,17 @@ public class GameController {
 					gdto.setInput_count(checkTodayGameCount + 1);
 					gameService.insertGamest(gdto);
 					return new ResponseEntity<>(new CMRespDto<>(1,"2B",gdto),HttpStatus.OK);
+				}else if (hitAndMissed.get(1) == 3 && hitAndMissed.get(0) == 0) {
+					pdto.setMember_number(dto.getMember_number());
+					gameService.updatePointInfoDate(dto);
+
+					gdto.setMember_number(dto.getMember_number());
+					gdto.setInput_number(dto.getEnter_num());
+					gdto.setCheck_result("3B");
+					gdto.setHided_number(hitAndMissed.get(2));
+					gdto.setInput_count(checkTodayGameCount + 1);
+					gameService.insertGamest(gdto);
+					return new ResponseEntity<>(new CMRespDto<>(1,"3B",gdto),HttpStatus.OK);
 				}else if (hitAndMissed.get(0) == 0 && hitAndMissed.get(1) == 0) {
 					pdto.setMember_number(dto.getMember_number());
 					gameService.updatePointInfoDate(dto);
@@ -342,6 +364,17 @@ public class GameController {
 				gdto.setInput_count(checkTodayGameCount + 1);
 				gameService.insertGamest(gdto);
 				return new ResponseEntity<>(new CMRespDto<>(1,"2B",gdto),HttpStatus.OK);
+			}else if (hitAndMissed.get(1) == 3 && hitAndMissed.get(0) == 0) {
+				pdto.setMember_number(dto.getMember_number());
+				gameService.updatePointInfoDate(dto);
+
+				gdto.setMember_number(dto.getMember_number());
+				gdto.setInput_number(dto.getEnter_num());
+				gdto.setCheck_result("3B");
+				gdto.setHided_number(hitAndMissed.get(2));
+				gdto.setInput_count(checkTodayGameCount + 1);
+				gameService.insertGamest(gdto);
+				return new ResponseEntity<>(new CMRespDto<>(1,"3B",gdto),HttpStatus.OK);
 			}else if (hitAndMissed.get(0) == 0 && hitAndMissed.get(1) == 0) {
 				pdto.setMember_number(dto.getMember_number());
 				gameService.updatePointInfoDate(dto);
@@ -435,6 +468,17 @@ public class GameController {
 				gdto.setInput_count(checkTodayGameCount + 1);
 				gameService.insertGamest(gdto);
 				return new ResponseEntity<>(new CMRespDto<>(1,"2B",gdto),HttpStatus.OK);
+			}else if (hitAndMissed.get(1) == 3 && hitAndMissed.get(0) == 0) {
+				pdto.setMember_number(dto.getMember_number());
+				gameService.updatePointInfoDate(dto);
+
+				gdto.setMember_number(dto.getMember_number());
+				gdto.setInput_number(dto.getEnter_num());
+				gdto.setCheck_result("3B");
+				gdto.setHided_number(hitAndMissed.get(2));
+				gdto.setInput_count(checkTodayGameCount + 1);
+				gameService.insertGamest(gdto);
+				return new ResponseEntity<>(new CMRespDto<>(1,"3B",gdto),HttpStatus.OK);
 			}else if (hitAndMissed.get(0) == 0 && hitAndMissed.get(1) == 0) {
 				pdto.setMember_number(dto.getMember_number());
 				gameService.updatePointInfoDate(dto);
