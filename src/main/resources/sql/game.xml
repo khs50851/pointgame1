@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ks.pointgame.mapper.GameMapper">
+
+
+	<select id="findByNumber" resultType="com.ks.pointgame.domain.MemberInfo">
+        SELECT * 
+        	FROM memberinfo
+        	WHERE member_number=#{member_number} and member_password=#{member_password}
+    </select>
+    
+    <select id="findPointByNumber" resultType="int">
+        SELECT point 
+        	FROM pointinfo
+        	WHERE member_number=#{member_number}
+    </select>
+    
+    <select id="checkTodayGameCount" resultType="int">
+        select count(*)
+         	from mgamesituation
+         	where to_char(input_date,'YYYYMMDD') = to_char(now(),'YYYYMMDD') and member_number=#{member_number}
+    </select>
+    
+    <select id="findCheckResult" resultType="int">
+        select count(*)
+         	from mgamesituation
+         	where to_char(input_date,'YYYYMMDD') = to_char(now(),'YYYYMMDD') and check_result='SSS' and member_number=#{member_number}
+    </select>
+    
+    
+    <select id="findhidedNumber" resultType="int">
+        select hided_number
+        	from mgamesituation
+        	where to_char(input_date,'YYYYMMDD') = to_char(now(),'YYYYMMDD') and member_number=#{member_number}
+        	order by input_date desc limit 1
+    </select>
+    
+    <select id="gameStList" resultType="com.ks.pointgame.dto.GameStDtoResp">
+        select ms.member_number,ms.input_count,ms.input_number,ms.check_result,ms.hided_number,pi.point
+			from mgamesituation ms
+			join memberinfo mi
+				on ms.member_number = mi.member_number
+			join pointinfo pi
+				on mi.member_number = pi.member_number
+			where ms.member_number=#{member_number} and to_char(ms.input_date,'YYYYMMDD') = to_char(now(),'YYYYMMDD')
+    </select>
+    
+    <update id="updatePoint" parameterType="com.ks.pointgame.dto.PointDto">
+		update pointinfo
+			set point = #{point},rec_update_date = now()
+			where member_number = #{member_number}
+	</update>
+	
+	<update id="updatePointInfoDate" parameterType="com.ks.pointgame.dto.InputNumDto">
+		update pointinfo
+			set rec_update_date = now()
+			where member_number = #{member_number}
+	</update>
+    
+    
+    <insert id="insertGamest">
+		insert into mgamesituation(mgt_id,member_number,input_count,input_number,check_result,hided_number,input_date) values(nextval('seq_mgs'),#{member_number},#{input_count},#{input_number},#{check_result},#{hided_number},now())
+	</insert>
+	
+	
+    
+</mapper>

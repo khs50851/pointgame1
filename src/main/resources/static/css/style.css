@@ -1,0 +1,204 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+  outline: none;
+}
+
+.container {
+  width: 100%;
+  min-height: 100%;
+}
+
+.loginMain {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(var(--b3f, 250, 250, 250), 1);
+}
+
+button {
+  cursor: pointer;
+}
+
+.login {
+  width: 100%;
+  max-width: 935px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__form__container {
+  width: 500px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login__form,
+.login__register {
+  padding: 10px 0 90px;
+  text-align: center;
+  border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+  background-color: #fff;
+}
+
+.login__form h1 {
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login__form h1 img {
+  width: 175px;
+  margin-top: 17px;
+}
+
+.login__input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  padding: 0 40px;
+}
+
+.login__input input {
+  width: 100%;
+  height: 38px;
+  padding: 9px 0 7px 8px;
+  border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.login__input button {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  height: 30px;
+  background-color: #0095f6;
+  color: #fff;
+  margin-top: 15px;
+  font-weight: 700;
+  border-radius: 3px;
+  transition: background 0.5s;
+}
+
+.login__input button:hover {
+  background: #0f75b9;
+}
+
+.login__horizon {
+  display: flex;
+  margin-top: 20px;
+  padding: 0 40px;
+  align-items: center;
+}
+
+.login__horizon .br {
+  width: 40%;
+  height: 1px;
+  border-top: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+}
+
+.login__horizon .or {
+  width: 20%;
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.login__facebook {
+  padding: 0 40px;
+  margin-top: 15px;
+}
+.login__facebook button {
+  background-color: #fff;
+  width: 100%;
+  height: 30px;
+  border: 0;
+  font-weight: 600;
+  font-size: 15px;
+}
+.login__facebook button i,
+span {
+  color: #385185;
+}
+
+.login__register {
+  margin-top: 10px;
+  line-height: 60px;
+  padding: 0;
+}
+
+.login__register span {
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.login__register a {
+  color: #0095f6;
+}
+
+.cta {
+  margin-right: 10px;
+  padding: 5px 9px;
+  border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+  border-radius: 4px;
+  color: #262626;
+  font-weight: bold;
+  background: transparent;
+}
+
+.cta.blue {
+  background: #0095f6 !important;
+  color: #fff !important;
+}
+
+.game_table {
+	margin-top:60px;
+}
+.gamebackground {
+	margin-top:100px;
+	width: 100%;
+    max-width: 935px;
+    justify-content: center;
+    align-items: center;
+}
+
+.emsg {
+	margin-top:20px;
+}
+
+.logout {
+	text-align:right;
+}
+
+.game_nav {
+	margin-top:50px;
+}
+
+.hidednumber{
+	margin : 40px 0px;
+	font-size: 2.5rem;
+	font-weight: bold;
+}
+.mypoint {
+	margin : 40px 0px;
+	font-size: 2.5rem;
+	font-weight: bold;
+	display: flex;
+    justify-content: flex-end;
+}
+.inputtext1 {
+	font-size: 2.5rem;
+	font-weight: bold;
+}
+.input_box{
+	margin-left:20px;
+}

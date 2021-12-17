@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ks.pointgame.mapper.LoginMapper">
+
+	<select id="findByNumber" resultType="com.ks.pointgame.domain.MemberInfo">
+        SELECT * 
+        	FROM memberinfo
+        	WHERE member_number=#{member_number} and member_password=#{member_password};
+    </select>
+    
+    <update id="updateRecDate" parameterType="com.ks.pointgame.dto.MemberDto">
+    	UPDATE memberinfo
+    		SET rec_update_date = now()
+    		WHERE member_number = #{member_number}
+    </update>
+    
+</mapper>
