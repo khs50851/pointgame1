@@ -6,13 +6,13 @@
 	<select id="findByNumber" resultType="com.ks.pointgame.domain.MemberInfo">
         SELECT * 
         	FROM memberinfo
-        	WHERE member_number=#{member_number} and member_password=#{member_password}
+        	WHERE member_number = #{member_number} and member_password = #{member_password}
     </select>
     
     <select id="findPointByNumber" resultType="int">
         SELECT point 
         	FROM pointinfo
-        	WHERE member_number=#{member_number}
+        	WHERE member_number = #{member_number}
     </select>
     
     <select id="checkTodayGameCount" resultType="int">
@@ -47,7 +47,7 @@
     
     <update id="updatePoint" parameterType="com.ks.pointgame.dto.PointDto">
 		update pointinfo
-			set point = #{point},rec_update_date = now()
+			set point = point + #{point},rec_update_date = now()
 			where member_number = #{member_number}
 	</update>
 	

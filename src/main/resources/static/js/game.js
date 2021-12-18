@@ -5,11 +5,13 @@ function logout() {
 	} else {
 	}
 }
-
+// 문자입력인지 숫자입력인지 유효성 체크
+$('input[onlyNumber]').on('keyup', function () {
+    	$(this).val($(this).val().replace(/[^0-9]/g, ""));
+	});
 // (2) 숫자입력
 function input_number(event) {
 	event.preventDefault();
-	
 	
 	if ($("#input_num").val() == "") {
 		alert("3자리 숫자를 입력하세요");
@@ -17,6 +19,7 @@ function input_number(event) {
 		return false;
 	}
 	
+
 	if($("#input_num").val().length != 3 ) {
     	alert("3자리 숫자를 입력해주세요");
     	return false;
@@ -51,8 +54,8 @@ function input_number(event) {
 		
 	}).fail(error => {
 		console.log(error);
-		alert(error.responseJSON.message);
 		
+		alert(error.responseJSON.message);
 	});
 
 }

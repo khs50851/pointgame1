@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ks.pointgame.domain.MemberInfo;
-import com.ks.pointgame.domain.PointInfo;
 import com.ks.pointgame.dto.CMRespDto;
 import com.ks.pointgame.dto.GameStDtoResp;
 import com.ks.pointgame.dto.GamestDto;

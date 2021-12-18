@@ -8,12 +8,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ks.pointgame.dto.CMRespDto;
 import com.ks.pointgame.handler.ex.CustomApiException;
+import com.ks.pointgame.handler.ex.CustomNumberFormatException;
 
 @RestController
 @ControllerAdvice
 public class ControllerExceptionHandler {
 	@ExceptionHandler(CustomApiException.class) // runtime exception 발생할경우 
 	public ResponseEntity<CMRespDto<?>> validationApiException(CustomApiException e) {
+		return new ResponseEntity<>(new CMRespDto<>(-1,e.getMessage(),null),HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	
+	@ExceptionHandler(CustomNumberFormatException.class) // runtime exception 발생할경우 
+	public ResponseEntity<CMRespDto<?>> numberFormatException(CustomNumberFormatException e) {
 		return new ResponseEntity<>(new CMRespDto<>(-1,e.getMessage(),null),HttpStatus.BAD_REQUEST);
 	}
 }

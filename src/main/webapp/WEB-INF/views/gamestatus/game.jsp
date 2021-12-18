@@ -44,7 +44,7 @@
 						value="${member.member_number }" />
 					<div class="form-group inputtext1">
 						<label for="exampleInputName2">입력</label> 
-						<input type="text" maxlength="3" class="form-control input_box" name="enter_num" id="input_num" placeholder="input your numbers">
+						<input type="text" maxlength="3" class="form-control input_box" name="enter_num" id="input_num" placeholder="input your numbers" onlyNumber>
 					</div>
 					<button class="btn btn-default">確認</button>
 				</form>
