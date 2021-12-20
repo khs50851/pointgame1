@@ -21,7 +21,6 @@ import com.ks.pointgame.dto.GamestDto;
 import com.ks.pointgame.dto.InputNumDto;
 import com.ks.pointgame.dto.PointDto;
 import com.ks.pointgame.game.Game;
-import com.ks.pointgame.handler.ex.CustomApiException;
 import com.ks.pointgame.service.GameService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,10 +36,29 @@ public class GameController {
 		
 		HttpSession session = req.getSession();
 		MemberInfo mem = (MemberInfo)session.getAttribute("member");
+		if(mem==null) {
+			return "login/login";
+		}
 		int po = gameService.findPointByNumber(mem);
 		
-		
 		List<GameStDtoResp> list = gameService.gameStList(mem);
+		
+		// 判定結果がSSSだったら当たる、Xだったらはずれ入力。
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getCheck_result().equals("SSS")) {
+				list.get(i).setCheck_result("当たる");
+			}
+			if(list.get(i).getCheck_result().equals("X")) {
+				list.get(i).setCheck_result("はずれ");
+			}
+		}
+		int input_num = 0;
+		int inputLength = 0;
+		for(int i=0;i<list.size();i++) {
+			input_num = list.get(i).getInput_number();
+			inputLength = (int)(Math.log10(input_num)+1);
+			list.get(i).setPoint(inputLength);
+		}
 		model.addAttribute("list", list);
 		model.addAttribute("point", po);
 		return "gamestatus/game";
@@ -49,22 +67,36 @@ public class GameController {
 	@PostMapping("/game")
 	public @ResponseBody ResponseEntity<?> inputNum(InputNumDto dto) {
 		
-		// 오늘 게임에서 이긴 내용이 있는지 확인
+		// 今日のゲームで勝った内容があるか確認。
 		int checkTodaysResult = gameService.findCheckResult(dto);
 		if (checkTodaysResult == 1) {
-			return new ResponseEntity<>(new CMRespDto<>(1,"오늘은 이미 당첨 되셨습니다. 게임을 진행 할 수 없습니다",null),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new CMRespDto<>(1,"今日はすでに当たられました。 ゲームを進行できません。",null),HttpStatus.BAD_REQUEST);
 		}
 		
 		Game game = new Game();
+		
+		// 入力した数字の中に重複している数があるか検査。
+		int temp = dto.getEnter_num();
+		ArrayList<Integer> duplicateInputNumCheck = game.myNum(temp);
+		
+		for(int i=0;i<2;i++) {
+			for(int j=i+1;j<3;j++) {
+				if (duplicateInputNumCheck.get(i)==duplicateInputNumCheck.get(j)) {
+					return new ResponseEntity<>(new CMRespDto<>(-1,"重複していない数を入力してください。",null),HttpStatus.BAD_REQUEST);
+				}
+			}
+		}
+		
 		int point1000 = 1000;
 		int point500 = 500;
 		int point200 = 200;
+		// 今日のゲーム回数
 		int checkTodayGameCount = gameService.checkTodayGameCount(dto);
-		System.out.println("오늘 게임 횟수 : "+checkTodayGameCount);
+		System.out.println("今日のゲーム回数 : "+checkTodayGameCount);
 		int hidedNumber = 0;
 		PointDto pdto = new PointDto();
 		GamestDto gdto = new GamestDto();
-		// 0번에 hit 횟수 1번 인덱스에 missed 저장되어 있음 3번째엔 숨은 숫자
+		// 0回目のhit回数1回目インデックスにmissed保存されている。3回目は隠れた数字
 		
 		
 		// 오늘 게임한 횟수 0-5회차
@@ -84,7 +116,7 @@ public class GameController {
 					gdto.setInput_count(checkTodayGameCount + 1);
 					gameService.insertGamest(gdto);
 					
-					return new ResponseEntity<>(new CMRespDto<>(1,"도전에 성공하셨습니다. 오늘은 더 이상 게임 진행이 불가합니다.",gdto),HttpStatus.OK);
+					return new ResponseEntity<>(new CMRespDto<>(1,"挑戦に成功しました。 今日はこれ以上、ゲームを進めることができません。",gdto),HttpStatus.OK);
 				}else if(hitAndMissed.get(0) == 2 && hitAndMissed.get(1) == 0) {
 					pdto.setMember_number(dto.getMember_number());
 					gameService.updatePointInfoDate(dto);
@@ -175,9 +207,9 @@ public class GameController {
 					return new ResponseEntity<>(new CMRespDto<>(1,"X",gdto),HttpStatus.OK);
 				}
 				
-				// 오늘 첫게임이 아님
+				// 今日、最初のゲームじゃなければ
 			} else {
-				hidedNumber = gameService.findhidedNumber(dto); // 오늘 제일 최근에 했던 게임에서 숨겨진 숫자를 가져옴
+				hidedNumber = gameService.findhidedNumber(dto); // 今日一番最近やったゲームで 隠された数字を持ってくる。
 				ArrayList<Integer> hitAndMissed = game.gameStart(dto.getEnter_num(),hidedNumber);
 				if (hitAndMissed.get(0) == 3 && hitAndMissed.get(1) == 0) {
 					pdto.setMember_number(dto.getMember_number());
@@ -191,7 +223,7 @@ public class GameController {
 					gdto.setInput_count(checkTodayGameCount + 1);
 					gameService.insertGamest(gdto);
 
-					return new ResponseEntity<>(new CMRespDto<>(1,"도전에 성공하셨습니다. 오늘은 더 이상 게임 진행이 불가합니다.",gdto),HttpStatus.OK);
+					return new ResponseEntity<>(new CMRespDto<>(1,"挑戦に成功しました。 今日はこれ以上、ゲームを進めることができません。",gdto),HttpStatus.OK);
 				} else if (hitAndMissed.get(0) == 2 && hitAndMissed.get(1)==0) {
 					pdto.setMember_number(dto.getMember_number());
 					gameService.updatePointInfoDate(dto);
@@ -283,7 +315,7 @@ public class GameController {
 				}
 			}
 		} else if (5 <= checkTodayGameCount && checkTodayGameCount <= 6) {
-			hidedNumber = gameService.findhidedNumber(dto); // 오늘 제일 최근에 했던 게임에서 숨겨진 숫자를 가져옴
+			hidedNumber = gameService.findhidedNumber(dto); 
 			ArrayList<Integer> hitAndMissed = game.gameStart(dto.getEnter_num(),hidedNumber);
 			if (hitAndMissed.get(0) == 3 && hitAndMissed.get(1) == 0) {
 				pdto.setMember_number(dto.getMember_number());
@@ -296,7 +328,7 @@ public class GameController {
 				gdto.setHided_number(hitAndMissed.get(2));
 				gdto.setInput_count(checkTodayGameCount + 1);
 				gameService.insertGamest(gdto);
-				return new ResponseEntity<>(new CMRespDto<>(1,"도전에 성공하셨습니다. 오늘은 더 이상 게임 진행이 불가합니다.",gdto),HttpStatus.OK);
+				return new ResponseEntity<>(new CMRespDto<>(1,"挑戦に成功しました。 今日はこれ以上、ゲームを進めることができません。",gdto),HttpStatus.OK);
 			} else if (hitAndMissed.get(0) == 2 && hitAndMissed.get(1) == 0) {
 				pdto.setMember_number(dto.getMember_number());
 				gameService.updatePointInfoDate(dto);
@@ -387,7 +419,7 @@ public class GameController {
 				return new ResponseEntity<>(new CMRespDto<>(1,"X",gdto),HttpStatus.OK);
 			}
 		} else if (7 <= checkTodayGameCount && checkTodayGameCount <= 9) {
-			hidedNumber = gameService.findhidedNumber(dto); // 오늘 제일 최근에 했던 게임에서 숨겨진 숫자를 가져옴
+			hidedNumber = gameService.findhidedNumber(dto); 
 			ArrayList<Integer> hitAndMissed = game.gameStart(dto.getEnter_num(),hidedNumber);
 			if (hitAndMissed.get(0) == 3 && hitAndMissed.get(1) == 0) {
 				pdto.setMember_number(dto.getMember_number());
@@ -400,7 +432,7 @@ public class GameController {
 				gdto.setHided_number(hitAndMissed.get(2));
 				gdto.setInput_count(checkTodayGameCount + 1);
 				gameService.insertGamest(gdto);
-				return new ResponseEntity<>(new CMRespDto<>(1,"도전에 성공하셨습니다. 오늘은 더 이상 게임 진행이 불가합니다.",gdto),HttpStatus.OK);
+				return new ResponseEntity<>(new CMRespDto<>(1,"挑戦に成功しました。 今日はこれ以上、ゲームを進めることができません。",gdto),HttpStatus.OK);
 			} else if (hitAndMissed.get(0) == 2 && hitAndMissed.get(1) == 0) {
 				pdto.setMember_number(dto.getMember_number());
 				gameService.updatePointInfoDate(dto);
@@ -491,7 +523,7 @@ public class GameController {
 				return new ResponseEntity<>(new CMRespDto<>(1,"X",gdto),HttpStatus.OK);
 			}
 		} else {
-			return new ResponseEntity<>(new CMRespDto<>(-1,"오늘 10번의 도전에 실패하셨습니다. 내일 다시 도전해주세요.",null),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new CMRespDto<>(-1,"今日の10回の挑戦に失敗しました。 明日また挑戦してください。",null),HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(new CMRespDto<>(-1,"no",null),HttpStatus.BAD_REQUEST);
 	}

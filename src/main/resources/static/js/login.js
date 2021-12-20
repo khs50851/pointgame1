@@ -1,15 +1,15 @@
-// (1) 로그인
+// (1) ログイン
 function login(event) {
 	event.preventDefault();
 
 	if ($("#mem_num").val() == "") {
-		alert("아이디 입력바람");
+		alert("IDを入力してください。");
 		$("#mem_num").focus();
 		return false;
 	}
 	
 	if ($("#mem_password").val() == "") {
-		alert("패스워드 입력바람");
+		alert("パスワードを入力してください。");
 		$("#mem_password").focus();
 		return false;
 	}

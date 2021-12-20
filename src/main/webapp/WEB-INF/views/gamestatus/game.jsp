@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,19 +32,19 @@
 
 		<nav class="game_nav">
 			<div class="logout">
-				<button class="btn btn-info" onclick="logout()">로그아웃</button>
+				<button class="btn btn-info" onclick="logout()">ログアウト</button>
 			</div>
 		</nav>
 
 		<section class="gamebackground">
-				<div class="mypoint">나의 점수&emsp; ${point }</div>
-			<div class="hidednumber">숨겨진 숫자&emsp;*&emsp;*&emsp;*</div>
+				<div class="mypoint">現在のポイント&emsp; ${point }</div>
+			<div class="hidednumber">隠れ数字&emsp;*&emsp;*&emsp;*</div>
 			<div class="inputnumber">
 				<form class="form-inline" id="numberInput_form" onsubmit="input_number(event)">
 					<input type="hidden" name="member_number"
 						value="${member.member_number }" />
 					<div class="form-group inputtext1">
-						<label for="exampleInputName2">입력</label> 
+						<label for="exampleInputName2">入力</label> 
 						<input type="text" maxlength="3" class="form-control input_box" name="enter_num" id="input_num" placeholder="input your numbers" onlyNumber>
 					</div>
 					<button class="btn btn-default">確認</button>
@@ -55,24 +56,27 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>입력회차</th>
-							<th>나의숫자</th>
-							<th>판정결과</th>
+							<th>入力回数</th>
+							<th>入力情報</th>
+							<th>判定結果</th>
 						</tr>
 					</thead>
 					<tbody id="gametbody">
 					<c:forEach var="gameSt" items="${list }">
 						<tr>
-							<td>${gameSt.input_count} 회차</td>
-							<td>${gameSt.input_number}</td>
+							<td>${gameSt.input_count} 回目</td>
+							<c:choose>
+								<c:when test = "${gameSt.point == 2}">
+									<td>0${gameSt.input_number}</td>
+								</c:when>
+								<c:otherwise>
+									<td>${gameSt.input_number}</td>
+								</c:otherwise>
+							</c:choose>
 							<td>${gameSt.check_result}</td>
 						</tr>
-					
 					</c:forEach>
-						
-						
 					</tbody>
-
 				</table>
 			</div>
 		</section>

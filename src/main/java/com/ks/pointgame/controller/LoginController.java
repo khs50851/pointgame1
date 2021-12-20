@@ -34,11 +34,11 @@ public class LoginController {
 		MemberInfo memberEntity = loginService.findByNumber(dto);
 		HttpSession session = req.getSession();
 		if(memberEntity==null) {
-			return new ResponseEntity<>(new CMRespDto<>(-1,"로그인 실패 : 회원 아이디 또는 비밀번호를 다시 확인하세요.",null),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new CMRespDto<>(-1,"ログイン失敗:会員IDまたはパスワードをもう一度確認してください。",null),HttpStatus.BAD_REQUEST);
 		}else {
 			session.setAttribute("member", memberEntity);
 			loginService.updateRecDate(dto);
-			return new ResponseEntity<>(new CMRespDto<>(1,"로그인 성공",memberEntity),HttpStatus.OK);
+			return new ResponseEntity<>(new CMRespDto<>(1,"ログイン成功",memberEntity),HttpStatus.OK);
 		}
 	}
 	

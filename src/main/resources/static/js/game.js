@@ -1,6 +1,6 @@
 // (1) 로그아웃
 function logout() {
-	if (confirm('로그아웃 하시겠습니까?')) {
+	if (confirm('ログアウトしますか?')) {
 		location.href = "/logout";
 	} else {
 	}
@@ -14,20 +14,20 @@ function input_number(event) {
 	event.preventDefault();
 	
 	if ($("#input_num").val() == "") {
-		alert("3자리 숫자를 입력하세요");
+		alert("3桁数字を入力してください。");
 		$("#input_num").focus();
 		return false;
 	}
 	
 
 	if($("#input_num").val().length != 3 ) {
-    	alert("3자리 숫자를 입력해주세요");
+    	alert("3桁数字を入力してください。");
     	return false;
 	}
 	
 
 	let data = $("#numberInput_form").serialize();
-	console.log("데이터 : ",data);
+	console.log("データ : ",data);
 	
 	$.ajax({
 		type: "POST",
@@ -39,16 +39,30 @@ function input_number(event) {
 		console.log(res);
 		let item = `
 			<tr>
-				<td>${res.data.input_count} 회차</td>
-				<td>${res.data.input_number}</td>
-				<td>${res.data.check_result}</td>
+				<td>${res.data.input_count} 回目</td>
+				`
+				if(JSON.stringify(res.data.input_number).length==2){
+					item += `<td>0${res.data.input_number}</td>`
+				}else{
+					item += `<td>${res.data.input_number}</td>`
+				}
+				
+				if(res.data.check_result == 'X'){
+					item+=`<td>はずれ</td>`;
+				}else if(res.data.check_result == 'SSS'){
+					item+=`<td>当たる</td>`;
+				}
+				else{
+					item+=`<td>${res.data.check_result}</td>`;
+				}
+		`
 			</tr>
 		`;
 		$("#gametbody").append(item);
 		$("#input_num").val('');
 		let check_result = res.data.check_result;
 		if(check_result == "SSS"){
-			alert(JSON.stringify(res.message));
+			alert(res.message);
 			location.href="/game";
 		}
 		

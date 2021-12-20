@@ -28,7 +28,7 @@
                         <form class="login__input" id="login_input" onsubmit="login(event)">
                             <input type="text" id="mem_num" name="member_number" placeholder="username"/>
                             <input type="password" id="mem_password" name="member_password" placeholder="password"/>
-                            <button>로그인</button>
+                            <button>ログイン</button>
                         </form>
                         <!--로그인 인풋end-->
                         <div class="emsg" id="loginerrormsg"></div>
