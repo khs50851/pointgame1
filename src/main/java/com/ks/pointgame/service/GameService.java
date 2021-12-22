@@ -54,4 +54,12 @@ public class GameService {
 	public List<GameStDtoResp> gameStList(MemberInfo mem){
 		return gameMapper.gameStList(mem);
 	}
+	
+	public int findCountUntilNowByMember(String mem) {
+		return gameMapper.findCountUntilNowByMember(mem);
+	}
+	
+	public int insertPointinfo(String mem) {
+		return gameMapper.insertPointinfo(mem);
+	}
 }

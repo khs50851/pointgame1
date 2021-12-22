@@ -24,7 +24,10 @@ public class Game {
 		}
 		return arr;
 	}
-
+	
+	// 今日、最初のゲームである場合
+	// 自分が入力した数字と隠された数字を比較して新しい配列に入れること
+	// 0番目のindexは数字と位置が一致、1番目のindexは数字はあっても位置は異なる、2番目のindexは隠された数字
 	public ArrayList<Integer> gameStart(int input) {
 		ArrayList<Integer> gameArr = createRandNum();
 		int hidedNum = (gameArr.get(0)*100)+(gameArr.get(1)*10)+gameArr.get(2);
@@ -51,6 +54,9 @@ public class Game {
 		return hitAndMissed;
 	}
 	
+	// 今日、初ゲームじゃない場合
+	// 自分が入力した数字と隠された数字を比較して新しい配列に入れること
+	// 0番目のindexは数字と位置が一致、1番目のindexは数字はあっても位置は異なる、2番目のindexは隠された数字
 	public ArrayList<Integer> gameStart(int input,int hidedNumber) {
 		ArrayList<Integer> gameArr = hidedNumInArr(hidedNumber);
 		System.out.println("隠れ数字2 : "+gameArr.toString());
@@ -101,6 +107,7 @@ public class Game {
 			arr.add(num % 10);
 			num /= 10;
 		}
+		
 		int temp1 = arr.get(2);
 		arr.set(2, arr.get(0));
 		arr.set(0, temp1);

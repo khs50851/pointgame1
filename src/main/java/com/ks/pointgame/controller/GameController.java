@@ -39,7 +39,14 @@ public class GameController {
 		if(mem==null) {
 			return "login/login";
 		}
-		int po = gameService.findPointByNumber(mem);
+		
+		int po = 0;
+		
+		if(gameService.findCountUntilNowByMember(mem.getMember_number()) == 0) {
+			po = -1;
+		}else {
+			po = gameService.findPointByNumber(mem);
+		}
 		
 		List<GameStDtoResp> list = gameService.gameStList(mem);
 		
@@ -54,6 +61,7 @@ public class GameController {
 		}
 		int input_num = 0;
 		int inputLength = 0;
+		// 自分が入力した数字の長さを探し、point変数にsave
 		for(int i=0;i<list.size();i++) {
 			input_num = list.get(i).getInput_number();
 			inputLength = (int)(Math.log10(input_num)+1);
@@ -78,7 +86,9 @@ public class GameController {
 		// 入力した数字の中に重複している数があるか検査。
 		int temp = dto.getEnter_num();
 		ArrayList<Integer> duplicateInputNumCheck = game.myNum(temp);
-		
+		if(duplicateInputNumCheck.get(0) == duplicateInputNumCheck.get(1) && duplicateInputNumCheck.get(1) == duplicateInputNumCheck.get(2)) {
+			return new ResponseEntity<>(new CMRespDto<>(-1,"重複していない数を入力してください。",null),HttpStatus.BAD_REQUEST);
+		};
 		for(int i=0;i<2;i++) {
 			for(int j=i+1;j<3;j++) {
 				if (duplicateInputNumCheck.get(i)==duplicateInputNumCheck.get(j)) {
@@ -87,6 +97,12 @@ public class GameController {
 			}
 		}
 		
+		// 今までゲームをしたことがなければpointinfoテーブルに会員のデータをinsert
+		if(gameService.findCountUntilNowByMember(dto.getMember_number()) == 0) {
+			gameService.insertPointinfo(dto.getMember_number());
+		}
+		
+		// ポイント準備
 		int point1000 = 1000;
 		int point500 = 500;
 		int point200 = 200;
@@ -96,12 +112,12 @@ public class GameController {
 		int hidedNumber = 0;
 		PointDto pdto = new PointDto();
 		GamestDto gdto = new GamestDto();
-		// 0回目のhit回数1回目インデックスにmissed保存されている。3回目は隠れた数字
 		
+		// 0回目のindexにはhit回数、1回目indexにはmissed保存されている。3回目のは隠れた数字
+		// 今日ゲームした回数0-5回目
 		
-		// 오늘 게임한 횟수 0-5회차
 		if (0 <= checkTodayGameCount && checkTodayGameCount <= 4) {
-			// 오늘 첫게임인지 확인
+			// 今日初ゲームか確認
 			if (checkTodayGameCount == 0) {
 				ArrayList<Integer> hitAndMissed = game.gameStart(dto.getEnter_num());
 				if (hitAndMissed.get(0) == 3 && hitAndMissed.get(1) == 0) {

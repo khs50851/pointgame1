@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ks.pointgame.mapper.GameMapper">
 
-
 	<select id="findByNumber" resultType="com.ks.pointgame.domain.MemberInfo">
         SELECT * 
         	FROM memberinfo
@@ -27,7 +26,6 @@
          	where to_char(input_date,'YYYYMMDD') = to_char(now(),'YYYYMMDD') and check_result='SSS' and member_number=#{member_number}
     </select>
     
-    
     <select id="findhidedNumber" resultType="int">
         select hided_number
         	from mgamesituation
@@ -45,6 +43,12 @@
 			where ms.member_number=#{member_number} and to_char(ms.input_date,'YYYYMMDD') = to_char(now(),'YYYYMMDD')
     </select>
     
+    <select id="findCountUntilNowByMember" resultType="int">
+        select count(*) 
+        	from mgamesituation
+        	where member_number = #{param1}
+    </select>
+    
     <update id="updatePoint" parameterType="com.ks.pointgame.dto.PointDto">
 		update pointinfo
 			set point = point + #{point},rec_update_date = now()
@@ -57,11 +61,12 @@
 			where member_number = #{member_number}
 	</update>
     
-    
     <insert id="insertGamest">
 		insert into mgamesituation(mgt_id,member_number,input_count,input_number,check_result,hided_number,input_date) values(nextval('seq_mgs'),#{member_number},#{input_count},#{input_number},#{check_result},#{hided_number},now())
 	</insert>
 	
-	
+	<insert id="insertPointinfo">
+		insert into pointinfo values(nextval('seq_pinfo'),#{param1})
+	</insert>
     
 </mapper>

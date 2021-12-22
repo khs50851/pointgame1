@@ -7,7 +7,13 @@ function logout() {
 }
 // 문자입력인지 숫자입력인지 유효성 체크
 $('input[onlyNumber]').on('keyup', function () {
-    	$(this).val($(this).val().replace(/[^0-9]/g, ""));
+    	// $(this).val($(this).val().replace(/[^0-9]/g, ""));
+    	let re = /[^0-9]/g;
+    	let myArray = re.exec($(this).val());
+    	if(myArray!=null){
+			alert('数字を入力してください。');
+			$(this).val('');
+		}
 	});
 // (2) 숫자입력
 function input_number(event) {
@@ -71,5 +77,14 @@ function input_number(event) {
 		
 		alert(error.responseJSON.message);
 	});
-
 }
+
+// (3) 게임 룰 모달
+
+$('#openModalBtn').on('click', function(){
+$('#modalBox').modal('show');
+});
+// 모달 안의 취소 버튼에 이벤트를 건다.
+$('#closeModalBtn').on('click', function(){
+$('#modalBox').modal('hide');
+});

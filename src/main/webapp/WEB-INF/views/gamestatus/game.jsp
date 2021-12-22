@@ -37,7 +37,60 @@
 		</nav>
 
 		<section class="gamebackground">
-				<div class="mypoint">現在のポイント&emsp; ${point }</div>
+			
+			<div class="gamerule">
+				<!-- 모달을 열기 위한 버튼 -->
+				<button type="button" class="btn btn-primary btn-lg" id="openModalBtn">
+					ゲームのルール
+				</button>
+				<!-- 모달 영역 -->
+				<div id="modalBox" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+								<h4 class="modal-title" id="myModalLabel">ゲームのルール</h4>
+							</div>
+							<div class="modal-body">
+								1.重複数字は入力できません。<br>
+								2.ログインしたネットショップ会員はこのゲームを1日に1回のみ参加できる。<br>
+								3.会員はランダムで決められた0～9の隠れ数字3つを推理する。<br>
+								4.ゲームのルールは以下を参照する。<br>
+								<br>
+								隠れ数字：216<br>
+								<br>
+								1回目&emsp;830&emsp;はずれ&emsp;当たり数字がないのではずれ<br>
+								2回目&emsp;659&emsp;1B&emsp;6の数字は当たったが、入力位置が違うので１B<br>
+								3回目&emsp;264&emsp;1S1B&emsp;2の数字と位置が一致したので1S、6の数字は当たった、入力位置が違うので１B<br>
+								4回目&emsp;126&emsp;1S2B&emsp;6の数字と位置が一致したので1S、1と2の数字は当たったが、入力位置が違うので２B<br>
+								5回目&emsp;216&emsp;当たる&emsp;←3つ全部当たったので会員の勝ち<br>
+								<br>
+								5.会員の入力チャンスは10回までとする。10回の間で当たった場合は以下のクーポンを会員に発給する。<br>
+								入力回数が1回目～5回目の間で当たった場合、1,000円のクーポンを発給<br>
+								入力回数が6回目～7回目の間で当たった場合、500円のクーポンを発給<br>
+								入力回数が8回目～10回目の間で当たった場合、200円のクーポンを発給<br>
+								<br>
+								6.会員が勝ったらイベント当たりのポップアップが出て、会員にクーポンが発給される。<br>
+								7.10回挑戦しても当たらない場合は会員の負けではずれのポップアップメッセージを出力し、ゲームは終了される。<br>
+								
+							</div>
+							<div class="modal-footer modal_close">
+								<button type="button" class="btn btn-primary" id="closeModalBtn">確認</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<c:choose>
+				<c:when test = "${point == -1}">
+					<div class="mypoint">現在のポイント&emsp; 0</div>
+				</c:when>
+				<c:otherwise>
+					<div class="mypoint">現在のポイント&emsp; ${point }</div>
+				</c:otherwise>
+			</c:choose>
+			
 			<div class="hidednumber">隠れ数字&emsp;*&emsp;*&emsp;*</div>
 			<div class="inputnumber">
 				<form class="form-inline" id="numberInput_form" onsubmit="input_number(event)">
